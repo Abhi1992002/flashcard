@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 type DashboardPageProps = {};
 
-export const DashboardPage = ({}: DashboardPageProps) => {
+const DashboardPage = ({}: DashboardPageProps) => {
   const [state, setState] = useState();
 
   useEffect(() => {}, []);
