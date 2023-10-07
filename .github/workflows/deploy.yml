@@ -6,10 +6,10 @@ on:
       - main
 
 jobs:
-  Production:
-    name: Deploying WEbsite
+  Deploying:
+    name: Deploying Website
     runs-on: ubuntu-latest
-    environment: Production
+    environment: flashcard
     steps:
       - uses: actions/checkout@v3
       - name: Build & Deploy
