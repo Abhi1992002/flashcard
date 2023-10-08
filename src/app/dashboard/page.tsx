@@ -1,17 +1,19 @@
-"use client";
-import { Dashboard } from "@/components/Dashboard";
-import React, { useEffect, useState } from "react";
+import { MainConsole } from "@/components/dashboard/MainConsole";
+import { UpperDashboard } from "@/components/dashboard/Upper";
+import React from "react";
 
 type DashboardPageProps = {};
 
 const DashboardPage = ({}: DashboardPageProps) => {
-  const [state, setState] = useState();
-
-  useEffect(() => {}, []);
-
   return (
     <>
-      <Dashboard />
+      <div className="w-screen h-screen overflow-hidden flex flex-col">
+        <UpperDashboard />
+
+        <div className="flex-1 w-[100%] flex">
+          <MainConsole />
+        </div>
+      </div>
     </>
   );
 };

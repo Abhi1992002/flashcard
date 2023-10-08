@@ -75,6 +75,9 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "border-width": "border-width 3s infinite alternate",
       },
+      flex: {
+        "4": "4 4 0%",
+      },
       keyframes: {
         "border-width": {
           from: {
