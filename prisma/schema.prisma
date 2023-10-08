@@ -47,6 +47,31 @@ model User {
   image         String?
   credits       Int       @default(10)
 
-  accounts Account[]
-  sessions Session[]
+  accounts  Account[]
+  sessions  Session[]
+  notebooks Notebook[]
+}
+
+model Notebook {
+  id     String  @id @default(cuid())
+  name   String?
+  color  String?
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  flashcards FlashCard[]
+
+  @@index([userId])
+}
+
+model FlashCard {
+  id         String  @id @default(cuid())
+  answer     String?
+  question   String?
+  notebookId String
+  color      String?
+
+  notebook Notebook @relation(fields: [notebookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([notebookId])
 }

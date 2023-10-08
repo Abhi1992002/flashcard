@@ -29,7 +29,7 @@ export const FlashCard = ({ colorNumber }: FlashCardProps) => {
 
   return (
     <div
-      className={`flip-card w-[250px] min-h-[350px] h-[350px] relative`}
+      className={`flip-card sm:w-[400px] w-[90vw] min-h-[350px] h-[350px] relative`}
       key={colorNumber}
     >
       {/* card */}

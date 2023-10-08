@@ -1,15 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
+import clsx from "clsx";
 
 type ButtonsProps = {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  color?: string;
+  borderColor?: string;
 };
 
-export const Buttons = ({ children, className, onClick }: ButtonsProps) => {
+export const Buttons = ({
+  children,
+  className,
+  onClick,
+  color,
+  borderColor,
+}: ButtonsProps) => {
   return (
     <motion.div
       whileTap={{ scale: 1.1 }}
@@ -18,7 +27,11 @@ export const Buttons = ({ children, className, onClick }: ButtonsProps) => {
     >
       <Button
         onClick={onClick}
-        className="border-black bg-white text-black border-2 w-[100%]  hover:bg-gray-200"
+        className={clsx(
+          " text-black border-2 w-[100%] h-[100%] hover:bg-gray-200",
+          color ? color : "bg-white",
+          borderColor ? borderColor : "border-black"
+        )}
       >
         {children}
       </Button>

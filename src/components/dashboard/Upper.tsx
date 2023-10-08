@@ -50,7 +50,7 @@ export const UpperDashboard = async ({}: UpperDashboardProps) => {
         <DarkToggle />
       </div>
 
-      <div className="hidden md:flex">
+      <div className="md:flex">
         {!session?.user ? <SignInButton /> : <SignOutButton />}
       </div>
     </div>

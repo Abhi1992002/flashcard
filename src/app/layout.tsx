@@ -2,6 +2,8 @@ import { ThemeProvider } from '@/components/Provider'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Toaster } from "@/components/ui/toaster"
+import { UpperDashboard } from '@/components/dashboard/Upper'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,8 +28,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+              <UpperDashboard />
             {children}
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </>

@@ -5,10 +5,13 @@ import { Create } from "./Create";
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 import { Buttons } from "../Buttons";
+import { Notebook } from "@prisma/client";
 
-type MainConsoleProps = {};
+type MainConsoleProps = {
+  notebook?: Notebook[];
+};
 
-export const MainConsole = ({}: MainConsoleProps) => {
+export const MainConsole = ({ notebook }: MainConsoleProps) => {
   const [tabListOpen, setTabListOpen] = useState(true);
   return (
     <>
@@ -36,7 +39,7 @@ export const MainConsole = ({}: MainConsoleProps) => {
                 className="text-md mb-[15px] w-[95%] self-center"
                 value="create"
               >
-                Create Course
+                NoteBooks
               </TabsTrigger>
               <TabsTrigger
                 onClick={() => {
@@ -86,7 +89,7 @@ export const MainConsole = ({}: MainConsoleProps) => {
               </Buttons>
 
               <TabsContent value="create">
-                <Create />
+                <Create notebook={notebook} />
               </TabsContent>
               <TabsContent value="library">library</TabsContent>
               <TabsContent value="ai">ai</TabsContent>
