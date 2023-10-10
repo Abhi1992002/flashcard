@@ -66,7 +66,7 @@ export const NoteBookInput = ({}: NoteBookInputProps) => {
   }
 
   return (
-    <div>
+    <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -154,6 +154,6 @@ export const NoteBookInput = ({}: NoteBookInputProps) => {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-    </div>
+    </>
   );
 };

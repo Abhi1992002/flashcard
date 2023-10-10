@@ -8,20 +8,11 @@ type DashboardPageProps = {};
 const DashboardPage = async ({}: DashboardPageProps) => {
   const session = await getAuthSession();
   if (session?.user) {
-    const notebook = await prisma.user.findUnique({
-      where: {
-        id: session.user.id,
-      },
-      include: {
-        notebooks: true,
-      },
-    });
-
     return (
       <>
-        <div className="w-screen h-screen overflow-hidden flex flex-col">
+        <div className="w-screen h-[calc(100vh-80px)] overflow-hidden flex flex-col">
           <div className="flex-1 w-[100%] flex">
-            <MainConsole notebook={notebook?.notebooks} />
+            <MainConsole id={session.user.id} />
           </div>
         </div>
       </>

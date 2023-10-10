@@ -1,18 +1,40 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Create } from "./Create";
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 import { Buttons } from "../Buttons";
 import { Notebook } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import { prisma } from "@/lib/db";
+import axios from "axios";
+import { CreateAiNotebook } from "../ai/Create";
 
 type MainConsoleProps = {
-  notebook?: Notebook[];
+  id?: string;
 };
 
-export const MainConsole = ({ notebook }: MainConsoleProps) => {
+export const MainConsole = ({ id }: MainConsoleProps) => {
   const [tabListOpen, setTabListOpen] = useState(true);
+  const [notebook, setNotebook] = useState<Notebook[]>();
+  const { mutate: getAllNoteBooks } = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post("/api/get/notebook");
+      return response.data;
+    },
+  });
+  useEffect(() => {
+    getAllNoteBooks(undefined, {
+      onSuccess: (data) => {
+        console.log(data.notebook);
+        setNotebook(data.notebook);
+      },
+      onError: () => {
+        console.log("error");
+      },
+    });
+  }, []);
   return (
     <>
       <div className="w-[100%] h-[100%] flex items-center justify-center">
@@ -92,7 +114,12 @@ export const MainConsole = ({ notebook }: MainConsoleProps) => {
                 <Create notebook={notebook} />
               </TabsContent>
               <TabsContent value="library">library</TabsContent>
-              <TabsContent value="ai">ai</TabsContent>
+              <TabsContent
+                className="flex items-center justify-center h-[100%]"
+                value="ai"
+              >
+                <CreateAiNotebook />
+              </TabsContent>
               <TabsContent value="quiz">quiz</TabsContent>
             </div>
           </Tabs>

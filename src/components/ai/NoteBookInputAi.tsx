@@ -23,86 +23,70 @@ import {
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
-import { flashcardSchema } from "@/validators/card";
-import Confetti from "./Confetti";
-
-type CreateCardFormProps = {
-  notebookId: string;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setIsVisible: Dispatch<SetStateAction<boolean>>;
-};
+import { aiCardSchema } from "@/validators/aiCard";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  answer: z.string().min(1, {
-    message: "answer must be at least 1 characters.",
-  }),
-  question: z.string(),
+  notebook: z.string(),
   color: z.string(),
+  title: z.string(),
+  description: z.string(),
 });
 
-export const CreateCardForm = ({
-  notebookId,
-  setOpen,
-  setIsVisible,
-}: CreateCardFormProps) => {
+export const NoteBookInputAi = () => {
   const { toast } = useToast();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      question: "",
-      answer: "",
+      notebook: "",
       color: "",
+      title: "",
+      description: "",
     },
   });
   const { mutate: createFlashCard } = useMutation({
-    mutationFn: async (data: z.infer<typeof flashcardSchema>) => {
-      const response = await axios.post("/api/create/flashcard", {
-        question: data.question,
-        answer: data.answer,
-        color: data.color,
-        notebookId: notebookId,
-      });
+    mutationFn: async (data: z.infer<typeof aiCardSchema>) => {
+      const response = await axios.post("/api/ai/create", data);
       return response.data;
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    createFlashCard(
-      {
-        question: values.question,
-        answer: values.answer,
-        color: values.color,
-        notebookId: notebookId,
+    setLoading(true);
+    createFlashCard(values, {
+      onSuccess: (data) => {
+        const { notebook_id } = data;
+        setLoading(false);
+        toast({
+          title: "Success",
+          description: "flashcard created successfully",
+        });
+        router.push(`/create/${notebook_id}`);
       },
-      {
-        onSuccess: (data) => {
-          setIsVisible(true);
-          setOpen(false);
-          toast({
-            title: "Success",
-            description: "flashcard created successfully",
-          });
-        },
-        onError: (error) => {
-          setOpen(false);
-          toast({
-            title: "Error",
-            description: "Internal Server Error",
-            variant: "destructive",
-          });
-        },
-      }
-    );
+      onError: (error) => {
+        setLoading(false);
+        console.log(error);
+        toast({
+          title: "Error",
+          description: "Internal Server Error",
+          variant: "destructive",
+        });
+      },
+    });
   }
+
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="question"
+            name="notebook"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Question</FormLabel>
+                <FormLabel>Name of Notebook</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -112,10 +96,23 @@ export const CreateCardForm = ({
           />
           <FormField
             control={form.control}
-            name="answer"
+            name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Answer</FormLabel>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -192,7 +189,10 @@ export const CreateCardForm = ({
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button disabled={loading} type="submit">
+            Submit
+            {loading && <Loader2 className="animate-spin ml-2" />}
+          </Button>
         </form>
       </Form>
     </>

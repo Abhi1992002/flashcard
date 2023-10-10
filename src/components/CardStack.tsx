@@ -11,7 +11,7 @@ export const CardStack = ({ notebook }: CardStackProps) => {
   const router = useRouter();
   return (
     <>
-      <div className="w-[250px] min-h-[250px] h-[250px] relative">
+      <div className="sm:w-[250px] w-[90vw] min-h-[250px] h-[250px] relative">
         <Button
           onClick={() => {
             router.push(`/create/${notebook.id}`);

@@ -20,6 +20,11 @@
   transform: rotateY(180deg);
 }
 
+body{
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 
 @layer base {
   :root {

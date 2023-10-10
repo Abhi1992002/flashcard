@@ -21,7 +21,7 @@ export const UpperDashboard = async ({}: UpperDashboardProps) => {
   return (
     <div
       className={clsx(
-        "w-[100%] border-b-2 p-4 flex items-center gap-5",
+        "w-[100%] border-b-2 h-[80px] px-4 flex items-center gap-5",
         session?.user ? "justify-between" : "justify-center"
       )}
     >
